@@ -11,8 +11,8 @@ function readExcel(fileName){
     return xlsx.utils.sheet_to_json(firstSheet,{defval:""})
 }
 
-const 납부자명단 = readExcel("2022학생회비납부자.xlsx")
-const 통장거래내역 = readExcel("통장거래내역.xlsx")
+const 납부자명단 = readExcel("membership.xlsx")
+const 통장거래내역 = readExcel("BankingHistory.xlsx")
 
 for(i = 0;i < 통장거래내역.length;i++){
     if(통장거래내역[i].맡기신금액 == 160000){
@@ -31,6 +31,21 @@ const book = xlsx.utils.book_new()
 
 const students = xlsx.utils.json_to_sheet(납부자명단)
 
+students['!cols'] = [
+    {wpx:120},
+    {wpx:60},
+    {wpx:40},
+    {wpx:120}
+]
+
+students.E1 = ""
+students.F1 = ""
+students.G1 = ""
+students.H1 = ""
+students.I1 = ""
+students.J1 = ""
+
+console.log(students)
 xlsx.utils.book_append_sheet(book,students,"시트1")
 
-xlsx.writeFile(book,"updated.xlsx")
+xlsx.writeFile(book,"Membership_updated.xlsx")
