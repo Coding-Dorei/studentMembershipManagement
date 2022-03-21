@@ -11,16 +11,21 @@ function readExcel(fileName){
     return xlsx.utils.sheet_to_json(firstSheet,{defval:""})
 }
 
-const 납부자명단 = readExcel("membership.xlsx")
+const 납부자명단 = readExcel("Membership.xlsx")
 const 통장거래내역 = readExcel("BankingHistory.xlsx")
+const dup = require('./sameName')
 
 for(i = 0;i < 통장거래내역.length;i++){
     if(통장거래내역[i].맡기신금액 == 160000){
         let name = 통장거래내역[i].기재내용
         for(j = 납부자명단.length-1;j>=0;j--){
             if(납부자명단[j].name == name){
-                console.log(name)
-                납부자명단[j].level = 1
+                if(dup.indexOf(name) != -1){
+                    console.log(`Check:${name}`)
+                }else{
+                    //console.log(name)
+                    납부자명단[j].level = 1
+                }
                 break
             }
         }
@@ -45,7 +50,6 @@ students.H1 = ""
 students.I1 = ""
 students.J1 = ""
 
-console.log(students)
 xlsx.utils.book_append_sheet(book,students,"시트1")
 
-xlsx.writeFile(book,"Membership_updated.xlsx")
+xlsx.writeFile(book,"Membership.xlsx")
